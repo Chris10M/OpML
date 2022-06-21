@@ -17,6 +17,8 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--hard', action='store_true', default=False,
                     help='hard Gumbel softmax')
+parser.add_argument('-f', action='store_true', default=False,
+                    help='placeholder')
 
 
 args = parser.parse_args()
