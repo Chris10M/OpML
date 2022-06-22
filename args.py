@@ -21,8 +21,6 @@ parser.add_argument('--hard', action='store_true', default=False,
                     help='hard Gumbel softmax')
 parser.add_argument('-f', action='store_true', default=False,
                     help='placeholder')
-
-
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 torch.manual_seed(args.seed)
