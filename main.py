@@ -14,9 +14,9 @@ from models.vae_reinforce import VAE as VAE_reinforce
 
 
 MODELS = {
-    # 'discrete': VAE_discrete,
+    'discrete': VAE_discrete,
     'gumbel': VAE_gumbel,
-    # 'reinforce': VAE_reinforce,
+    'reinforce': VAE_reinforce,
 }   
 
 
@@ -101,25 +101,6 @@ def main():
             with open(f'results/{model_name}/{optim_name}/test_loss.csv', 'w', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerows(losses)
-
-                     
-            # with open(f'results/{model_name}/{optim_name}.csv', 'w', newline='') as csv_file:
-
-                # csv_writer.writerows()
-            # print(model_name, optim_name, metrics)
-
-
-        # print(optim_name)
-        # model = VAE().to(device)
-        # optimizer = optim.Adam(model.parameters(), lr=1e-3)
-        # train(model, optimizer, train_loader, 0)    
-        # print('====> Test set loss: {:.4f}'.format(test_loss))
-        # if i == 0:r
-        #     n = min(data.size(0), 8)
-        #     comparison = torch.cat([data[:n],
-        #                           recon_batch.view(args.batch_size, 1, 28, 28)[:n]])
-        #     save_image(comparison.cpu(),
-        #              'resultsDiscrete/reconstruction_' + str(epoch) + '.png', nrow=n)
 
 
 if __name__ == '__main__':
