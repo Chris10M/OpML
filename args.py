@@ -1,6 +1,8 @@
+import sys
 import argparse
 import torch
 
+sys.argv = ['']
 
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
