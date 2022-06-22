@@ -14,8 +14,8 @@ from models.vae_reinforce import VAE as VAE_reinforce
 
 
 MODELS = {
-    # 'discrete': VAE_discrete,
-    'gumbel': VAE_gumbel,
+    'discrete': VAE_discrete
+    #'gumbel': VAE_gumbel,
     # 'reinforce': VAE_reinforce,
 }   
 
