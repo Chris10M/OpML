@@ -29,7 +29,7 @@ class VAE(nn.Module):
         h3 = F.relu(self.fc3(z))
         return F.sigmoid(self.fc4(h3))
 
-    def forward(self, x):
+    def forward(self, x, batch_idx):
         mu, logvar = self.encode(x.view(-1, 784))
         z = self.reparameterize(mu, logvar)
         return self.decode(z), mu, logvar

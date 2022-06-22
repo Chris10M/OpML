@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import csv
 
 import torch
 from torchvision import datasets, transforms
@@ -12,9 +14,9 @@ from models.vae_reinforce import VAE as VAE_reinforce
 
 
 MODELS = {
-    'discrete': VAE_discrete(),
-    'gumbel': VAE_gumbel(),
-    'reinforce': VAE_reinforce(),
+    # 'discrete': VAE_discrete,
+    'gumbel': VAE_gumbel,
+    # 'reinforce': VAE_reinforce,
 }   
 
 
@@ -27,7 +29,7 @@ def train(model, optimizer, train_loader, epoch):
     for batch_idx, (data, _) in enumerate(train_loader):
         data = data.to(device) 
         optimizer.zero_grad()
-        outs = model(data)
+        outs = model(data, batch_idx)
         loss = model.loss_function(*outs, data)
         loss.backward()
         train_loss += loss.item()
@@ -47,9 +49,9 @@ def test(model, test_loader):
 
     test_loss = 0
     with torch.no_grad():
-        for i, (data, _) in enumerate(test_loader):
+        for batch_idx, (data, _) in enumerate(test_loader):
             data = data.to(device)
-            outs = model(data)
+            outs = model(data, batch_idx)
             test_loss += model.loss_function(*outs, data).item()
 
     test_loss /= len(test_loader.dataset)
@@ -57,15 +59,19 @@ def test(model, test_loader):
     return test_loss
 
 
-def run(model, optimizer, train_loader, test_loader):   
+def run(model, optimizer, train_loader, test_loader): 
+    metrics = dict()  
     for epoch in range(1, args.epochs + 1):    
         train(model, optimizer, train_loader, epoch)
         test_loss = test(model, test_loader)
-
         samples = model.sample(device)
-            # save_image(sample.view(64, 1, 28, 28),
-            #         'resultsDiscrete/sample_' + str(epoch) + '.png')
-        print(test_loss, samples.shape)
+
+        metrics[epoch] = {
+            'loss': test_loss,
+            'samples': samples,
+        }
+
+    return metrics
 
 
 def main():
@@ -79,10 +85,30 @@ def main():
     batch_size=args.batch_size, shuffle=True, **kwargs)
 
     for model_name, model in MODELS.items():
+        os.makedirs(f'results/{model_name}', exist_ok=True)
+
         for optim_name, optimizer in Optimizers.items():
-            print(model_name, optim_name)
-            run(model.to(device), optimizer(params=model.parameters()), train_loader, test_loader)
-            
+            os.makedirs(f'results/{model_name}/{optim_name}/image', exist_ok=True)
+
+            model_instance = model()
+            metrics = run(model_instance.to(device), optimizer(params=model_instance.parameters()), train_loader, test_loader)
+
+            losses = list()
+            for epoch, item in metrics.items():
+                losses.append([epoch, item['loss']])
+                save_image(item['samples'], f'results/{model_name}/{optim_name}/image/{epoch}.png', nrow=8)
+
+            with open(f'results/{model_name}/{optim_name}/test_loss.csv', 'w', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerows(losses)
+
+                     
+            # with open(f'results/{model_name}/{optim_name}.csv', 'w', newline='') as csv_file:
+
+                # csv_writer.writerows()
+            # print(model_name, optim_name, metrics)
+
+
         # print(optim_name)
         # model = VAE().to(device)
         # optimizer = optim.Adam(model.parameters(), lr=1e-3)

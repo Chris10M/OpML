@@ -3,12 +3,17 @@ import numpy as np
 import torch.nn.functional as F
 from torch import nn, optim
 
-temp = 1
+temp_min = 0.5
+ANNEAL_RATE = 0.00003
 hard = False
 latent_dim = 30
 categorical_dim = 10  # one-of-K vector
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+class Config:
+    temp = 1
 
 
 def sample_gumbel(shape, eps=1e-20):
@@ -68,10 +73,13 @@ class VAE_gumbel(nn.Module):
         h5 = self.relu(self.fc5(h4))
         return self.sigmoid(self.fc6(h5))
 
-    def forward(self, x):
+    def forward(self, x, batch_idx):
+        if batch_idx % 100 == 1:
+            Config.temp = np.maximum(Config.temp * np.exp(-ANNEAL_RATE * batch_idx), temp_min)
+
         q = self.encode(x.view(-1, 784))
         q_y = q.view(q.size(0), latent_dim, categorical_dim)
-        z = gumbel_softmax(q_y, temp, hard)
+        z = gumbel_softmax(q_y, Config.temp, hard)
         return self.decode(z), F.softmax(q_y, dim=-1).reshape(*q.size())
 
     def loss_function(self, recon_x, qy, x):
@@ -80,7 +88,7 @@ class VAE_gumbel(nn.Module):
         log_ratio = torch.log(qy * categorical_dim + 1e-20)
         KLD = torch.sum(qy * log_ratio, dim=-1).mean()
 
-        return BCE + KLD
+        return (BCE + KLD) * len(x)
 
     def sample(self, device):
         M = 64 * latent_dim

@@ -22,7 +22,7 @@ class VAE(nn.Module):
         h3 = F.relu(self.fc3(z.view(len(z), 20*256)))
         return F.sigmoid(self.fc4(h3))
 
-    def forward(self, x):
+    def forward(self, x, batch_idx):
         # For convenience we use torch.distributions to sample and compute the values of interest for the distribution see (https://pytorch.org/docs/stable/distributions.html) for more details.
         probs = self.encode(x.view(-1, 784))
         m = OneHotCategorical(probs)
