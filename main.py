@@ -14,9 +14,9 @@ from models.vae_reinforce import VAE as VAE_reinforce
 
 
 MODELS = {
-    'discrete': VAE_discrete
-    #'gumbel': VAE_gumbel,
-    # 'reinforce': VAE_reinforce,
+    'discrete': VAE_discrete,
+    'gumbel': VAE_gumbel,
+    'reinforce': VAE_reinforce,
 }   
 
 
@@ -43,6 +43,8 @@ def train(model, optimizer, train_loader, epoch):
     print('====> Epoch: {} Average loss: {:.4f}'.format(
           epoch, train_loss / len(train_loader.dataset)))
 
+    return train_loss / len(train_loader.dataset)
+
 
 def test(model, test_loader):
     model.eval()
@@ -62,12 +64,13 @@ def test(model, test_loader):
 def run(model, optimizer, train_loader, test_loader): 
     metrics = dict()  
     for epoch in range(1, args.epochs + 1):    
-        train(model, optimizer, train_loader, epoch)
+        train_loss = train(model, optimizer, train_loader, epoch)
         test_loss = test(model, test_loader)
         samples = model.sample(device)
 
         metrics[epoch] = {
-            'loss': test_loss,
+            'train_loss': train_loss,
+            'test_loss': test_loss,
             'samples': samples,
         }
 
@@ -93,14 +96,20 @@ def main():
             model_instance = model()
             metrics = run(model_instance.to(device), optimizer(params=model_instance.parameters()), train_loader, test_loader)
 
-            losses = list()
+            train_losses = list()
+            test_losses = list()
             for epoch, item in metrics.items():
-                losses.append([epoch, item['loss']])
+                train_losses.append([epoch, item['train_loss']])
+                test_losses.append([epoch, item['test_loss']])
                 save_image(item['samples'], f'results/{model_name}/{optim_name}/image/{epoch}.png', nrow=8)
+
+            with open(f'results/{model_name}/{optim_name}/train_loss.csv', 'w', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerows(train_losses)
 
             with open(f'results/{model_name}/{optim_name}/test_loss.csv', 'w', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file)
-                csv_writer.writerows(losses)
+                csv_writer.writerows(test_losses)
 
                      
             # with open(f'results/{model_name}/{optim_name}.csv', 'w', newline='') as csv_file:
