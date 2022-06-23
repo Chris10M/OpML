@@ -5,6 +5,8 @@ from .op_adam_lop_adam import op_Adam_lop_Adam
 from .adamw import AdamW
 from .adafactor import Adafactor
 from .madgrad import MADGRAD
+from .nvnovograd import NvNovoGrad
+from .AdamS import Adams
 
 Optimizers = {
     #'adam': optim.Adam,
@@ -13,5 +15,7 @@ Optimizers = {
     #'sgd_Hd' : SGD_HD
     #'Adam_w' : AdamW
     #'Adam_R' : Adafactor
-    'MADGRAD': MADGRAD
+    #'MADGRAD': MADGRAD
+    #'NvNovoGrad' : NvNovoGrad
+    'AdaBelief' : Adams
 }

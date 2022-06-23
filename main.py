@@ -27,12 +27,17 @@ def train(model, optimizer, train_loader, epoch):
     model.train()
     train_loss = 0
     for batch_idx, (data, _) in enumerate(train_loader):
-        data = data.to(device) 
+        data = data.to(device)
+
+        def closure():
+            return loss
         optimizer.zero_grad()
         outs = model(data, batch_idx)
         loss = model.loss_function(*outs, data)
         loss.backward()
         train_loss += loss.item()
+        #for adamS optimiser
+        #optimizer.step(closure)
         optimizer.step()
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
