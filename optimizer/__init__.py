@@ -10,14 +10,14 @@ from .AdamS import Adams
 from .Nadam import Nadam
 
 Optimizers = {
-    #'adam': optim.Adam,
-    #'adam_op_adam_hd' : op_Adam_lop_Adam
-    #'adam_Hd' : Adam_HD
-    #'sgd_Hd' : SGD_HD
-    #'Adam_w' : AdamW
-    #'Adam_R' : Adafactor
-    #'MADGRAD': MADGRAD
-    #'NvNovoGrad' : NvNovoGrad
-    #'AdaBelief' : Adams
-    'AdaBound': Nadam
+    'adam': optim.Adam,
+    'adam_op_adam_hd' : op_Adam_lop_Adam,
+    'adam_Hd' : Adam_HD,
+    'sgd_Hd' : SGD_HD,
+    'Adam_w' : AdamW,
+    'Adam_R' : Adafactor,
+    'MADGRAD': MADGRAD,
+    'NvNovoGrad' : NvNovoGrad,
+    'AdaBelief' : Adams,
+    'Nadam': Nadam
 }
