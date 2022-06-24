@@ -7,6 +7,7 @@ from .adafactor import Adafactor
 from .madgrad import MADGRAD
 from .nvnovograd import NvNovoGrad
 from .AdamS import Adams
+from .Nadam import Nadam
 
 Optimizers = {
     #'adam': optim.Adam,
@@ -17,5 +18,6 @@ Optimizers = {
     #'Adam_R' : Adafactor
     #'MADGRAD': MADGRAD
     #'NvNovoGrad' : NvNovoGrad
-    'AdaBelief' : Adams
+    #'AdaBelief' : Adams
+    'AdaBound': Nadam
 }
