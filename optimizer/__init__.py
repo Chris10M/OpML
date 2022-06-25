@@ -2,7 +2,6 @@ from torch import optim
 from functools import *
 from .adam_Hd import Adam_HD
 from .op_adam_lop_adam import op_Adam_lop_Adam
-from .adamw import AdamW
 from .AdamP import AdamP
 from .adafactor import Adafactor
 from .madgrad import MADGRAD
@@ -16,8 +15,8 @@ Optimizers = {
     #'SGD_M': partial(optim.SGD, lr=1e-3, momentum=0.9)
     #'adam_op_adam_hd' : op_Adam_lop_Adam,
     #'adam_Hd' : Adam_HD,
-    #'Adam_w' : AdamW,
-    'Adam_w' : AdamP,
+    'Adam_w' : partial(optim.AdamW, lr=1e-3),
+    #'Adam_P' : AdamP,
     #'Adafactor' : Adafactor,
     #'MADGRAD': MADGRAD,
     #'NvNovoGrad' : NvNovoGrad,
