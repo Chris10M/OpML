@@ -20,8 +20,8 @@ MODELS = {
 }   
 
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 
 def train(model, optimizer, train_loader, epoch):
     model.train()

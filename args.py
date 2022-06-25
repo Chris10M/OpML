@@ -21,6 +21,8 @@ parser.add_argument('--hard', action='store_true', default=False,
                     help='hard Gumbel softmax')
 parser.add_argument('-f', action='store_true', default=False,
                     help='placeholder')
+parser.add_argument('--lr', help='initial learning rate', default=0.001, type=float)
+parser.add_argument('--momentum', help='learning learning rate', default=0.9, type=float)
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 torch.manual_seed(args.seed)

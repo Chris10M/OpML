@@ -27,7 +27,7 @@ class VAE(nn.Module):
 
     def decode(self, z):
         h3 = F.relu(self.fc3(z))
-        return F.sigmoid(self.fc4(h3))
+        return torch.sigmoid(self.fc4(h3))
 
     def forward(self, x, batch_idx):
         mu, logvar = self.encode(x.view(-1, 784))
@@ -37,7 +37,7 @@ class VAE(nn.Module):
     # Reconstruction + KL divergence losses summed over all elements and batch
     def loss_function(self, recon_x, mu, logvar, x):
         BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), size_average=False)
-
+        #BCE = F.mse_loss(recon_x, x.view(-1, 784))*10000
         # see Appendix B from VAE paper:
         # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
         # https://arxiv.org/abs/1312.6114
