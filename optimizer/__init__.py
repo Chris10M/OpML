@@ -1,6 +1,6 @@
 from torch import optim
 from functools import *
-#from qhoptim.pyt import QHM, QHAdam
+from qhoptim.pyt import QHM, QHAdam
 from .adam_Hd import Adam_HD
 from .op_adam_lop_adam import op_Adam_lop_Adam
 from .AdamP import AdamP
