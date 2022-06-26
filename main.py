@@ -94,6 +94,7 @@ def main():
 
         for optim_name, optimizer in Optimizers.items():
             os.makedirs(f'results/{model_name}/{optim_name}/image', exist_ok=True)
+            print("Model:", model_name, "Optimiser:", optim_name)
 
             model_instance = model()
             metrics = run(model_instance.to(device), optimizer(params=model_instance.parameters()), train_loader, test_loader)
