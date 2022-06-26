@@ -20,8 +20,7 @@ MODELS = {
 }   
 
 
-#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = "cpu"
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train(model, optimizer, train_loader, epoch):
     model.train()
@@ -36,9 +35,7 @@ def train(model, optimizer, train_loader, epoch):
         loss = model.loss_function(*outs, data)
         loss.backward()
         train_loss += loss.item()
-        #for adamS optimiser
-        #optimizer.step(closure)
-        optimizer.step()
+        optimizer.step(closure)
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
