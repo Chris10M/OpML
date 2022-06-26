@@ -13,7 +13,7 @@ from .Nadam import Nadam
 Optimizers = {
     'adam': optim.Adam,
     'Adam_w' : partial(optim.AdamW, lr=1e-3),
-    #'QHAdam' : partial(QHAdam, lr=1e-3, nus=(0.7, 1.0), betas=(0.995, 0.999)),
+    'QHAdam' : partial(QHAdam, lr=1e-3, nus=(0.7, 1.0), betas=(0.995, 0.999)),
     'Adam_P' : AdamP,
     'Adafactor' : Adafactor,
     'MADGRAD': MADGRAD,
