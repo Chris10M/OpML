@@ -1,5 +1,6 @@
 from torch import optim
 from functools import *
+from qhoptim.pyt import QHM, QHAdam
 from .adam_Hd import Adam_HD
 from .op_adam_lop_adam import op_Adam_lop_Adam
 from .AdamP import AdamP
@@ -10,16 +11,15 @@ from .AdamS import Adams
 from .Nadam import Nadam
 
 Optimizers = {
-    #'adam': optim.Adam,
-    #'SGD': partial(optim.SGD, lr=1e-3)
-    #'SGD_M': partial(optim.SGD, lr=1e-3, momentum=0.9)
-    #'adam_op_adam_hd' : op_Adam_lop_Adam,
-    #'adam_Hd' : Adam_HD,
+    'adam': optim.Adam,
     'Adam_w' : partial(optim.AdamW, lr=1e-3),
-    #'Adam_P' : AdamP,
-    #'Adafactor' : Adafactor,
-    #'MADGRAD': MADGRAD,
-    #'NvNovoGrad' : NvNovoGrad,
-    #'AdaBelief' : Adams,
-    #'Nadam': Nadam
+    'QHAdam' : partial(QHAdam, lr=1e-3, nus=(0.7, 1.0), betas=(0.995, 0.999)),
+    'Adam_P' : AdamP,
+    'Adafactor' : Adafactor,
+    'MADGRAD': MADGRAD,
+    'NvNovoGrad' : NvNovoGrad,
+    'AdaBelief' : Adams,
+    'Nadam': Nadam,
+    'adam_Hd' : Adam_HD,
+    'adam_op_adam_hd' : op_Adam_lop_Adam
 }
