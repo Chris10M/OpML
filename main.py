@@ -8,13 +8,13 @@ from torchvision.utils import save_image
 from args import args, kwargs
 
 from optimizer import Optimizers
-from models.vae_discrete import VAE as VAE_discrete
+from models.vae_gaussianSampled import VAE as VAE_gaussianSampled
 from models.vae_gumel_softmax import VAE_gumbel
 from models.vae_reinforce import VAE as VAE_reinforce
 
 
 MODELS = {
-    'discrete': VAE_discrete,
+    'gaussianSampled': VAE_gaussianSampled,
     'gumbel': VAE_gumbel,
     'reinforce': VAE_reinforce,
 }   
